@@ -61,6 +61,20 @@ WHERE continent is not NULL
 GROUP BY location, population
 ORDER BY 4 DESC
 
+----Countries: the highest infection rate relative to population
+	---Grouped by location population and date
+SELECT 
+	[Location], 
+	date,
+	[population], 
+	MAX(total_cases) as [Highest Infection Count], 
+	MAX((total_cases/population))*100 AS [Peak % cases/population]
+FROM SQL_Portfolio..CovidDeaths
+WHERE continent is not NULL
+	--	AND Location LIKE 'Sudan%'
+GROUP BY location, population, date
+ORDER BY 5 DESC
+
 --Countries: with the highest death counts
 SELECT 
 	[Location], 
@@ -80,6 +94,7 @@ SELECT
 	MAX(CAST(total_deaths as Int)) as [Total Death Count]
 FROM SQL_Portfolio..CovidDeaths
 WHERE continent is NULL
+	AND location not in ('World', 'High Income', 'Upper Middle Income', 'Lower Middle Income', 'European Union', 'Low Income', 'International')
 GROUP BY location
 ORDER BY 2 DESC
 
